@@ -6,12 +6,12 @@ const testAllRoutes = async () => {
     console.log('=== TESTING ALL ROUTES ===');
     
     // 1. Test basic API
-    const apiResponse = await fetch('http://localhost:5001/');
+    const apiResponse = await fetch('https://hostel-management-p5dk.onrender.com/');
     const apiData = await apiResponse.json();
     console.log('✅ API Root:', apiData.message);
     
     // 2. Login as admin
-    const adminLogin = await fetch('http://localhost:5001/api/auth/login', {
+    const adminLogin = await fetch('https://hostel-management-p5dk.onrender.com/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
