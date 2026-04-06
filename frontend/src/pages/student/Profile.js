@@ -25,7 +25,7 @@ const Profile = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/user/profile', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/user/profile', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -79,7 +79,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/user/profile', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/user/profile', {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

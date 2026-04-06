@@ -14,7 +14,7 @@ const Fees = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/user/fees?year=${selectedYear}`, {
+      const response = await fetch(`https://hostel-management-p5dk.onrender.com/api/user/fees?year=${selectedYear}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

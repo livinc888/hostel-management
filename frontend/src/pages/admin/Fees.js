@@ -23,7 +23,7 @@ const Fees = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/fees', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/fees', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -46,7 +46,7 @@ const Fees = () => {
   const fetchStudents = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/students', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/students', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -73,7 +73,7 @@ const Fees = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/fees', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/fees', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -108,7 +108,7 @@ const Fees = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/fees/pay', {
+      const response = await fetch('api/fees/pay', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

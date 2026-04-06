@@ -13,7 +13,7 @@ const Room = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/user/room', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/user/room', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

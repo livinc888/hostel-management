@@ -30,7 +30,7 @@ const testAllRoutes = async () => {
     console.log('✅ Admin login successful');
     
     // 3. Test students route
-    const studentsResponse = await fetch('http://localhost:5001/api/admin/students', {
+    const studentsResponse = await fetch('https://hostel-management-p5dk.onrender.comapi/admin/students', {
       headers: {
         'Authorization': `Bearer ${adminToken}`
       },
@@ -40,7 +40,7 @@ const testAllRoutes = async () => {
     console.log('✅ Students route:', studentsData.students?.length || 0, 'students found');
     
     // 4. Test leaves route
-    const leavesResponse = await fetch('http://localhost:5001/api/leaves', {
+    const leavesResponse = await fetch('https://hostel-management-p5dk.onrender.com/api/leaves', {
       headers: {
         'Authorization': `Bearer ${adminToken}`
       },
@@ -50,7 +50,7 @@ const testAllRoutes = async () => {
     console.log('✅ Leaves route:', leavesData.leaves?.length || 0, 'leaves found');
     
     // 5. Test login as student
-    const studentLogin = await fetch('http://localhost:5001/api/auth/login', {
+    const studentLogin = await fetch('https://hostel-management-p5dk.onrender.comapi/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -69,7 +69,7 @@ const testAllRoutes = async () => {
     console.log('✅ Student login successful');
     
     // 6. Test student leaves route
-    const studentLeavesResponse = await fetch('http://localhost:5001/api/user/leave', {
+    const studentLeavesResponse = await fetch('https://hostel-management-p5dk.onrender.com/api/user/leave', {
       headers: {
         'Authorization': `Bearer ${studentToken}`
       },
@@ -79,7 +79,7 @@ const testAllRoutes = async () => {
     console.log('✅ Student leaves route:', studentLeavesData?.length || 0, 'leaves found');
     
     // 7. Test room assignment
-    const roomAssignResponse = await fetch('http://localhost:5001/api/rooms/assign', {
+    const roomAssignResponse = await fetch('https://hostel-management-p5dk.onrender.com/api/rooms/assign', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${adminToken}`,

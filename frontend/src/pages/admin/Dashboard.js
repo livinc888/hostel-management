@@ -13,7 +13,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/admin/dashboard', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/admin/dashboard', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

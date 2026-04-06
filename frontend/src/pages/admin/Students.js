@@ -32,7 +32,7 @@ const Students = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/rooms/remove-student', {
+      const response = await fetch('api/rooms/remove-student', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

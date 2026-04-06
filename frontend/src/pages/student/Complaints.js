@@ -20,7 +20,7 @@ const Complaints = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/user/complaints', {
+      const response = await fetch('api/user/complaints', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -52,7 +52,7 @@ const Complaints = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/user/complaints', {
+      const response = await fetch('api/user/complaints', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

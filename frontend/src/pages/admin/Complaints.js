@@ -15,8 +15,8 @@ const Complaints = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       const url = filterStatus === 'all' 
-        ? 'http://localhost:5001/api/complaints'
-        : `http://localhost:5001/api/complaints?status=${filterStatus}`;
+        ? 'https://hostel-management-p5dk.onrender.com/api/complaints'
+        : `https://hostel-management-p5dk.onrender.com/api/complaints?status=${filterStatus}`;
       
       const response = await fetch(url, {
         headers: {
@@ -41,7 +41,7 @@ const Complaints = () => {
   const handleStatusUpdate = async (complaintId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/complaints/${complaintId}`, {
+      const response = await fetch(`https://hostel-management-p5dk.onrender.com/api/complaints/${complaintId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -64,7 +64,7 @@ const Complaints = () => {
   const handleRemarksUpdate = async (complaintId, remarks) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/complaints/${complaintId}`, {
+      const response = await fetch(`https://hostel-management-p5dk.onrender.com/api/complaints/${complaintId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
