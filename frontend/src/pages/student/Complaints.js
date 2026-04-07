@@ -20,14 +20,22 @@ const Complaints = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('api/user/complaints', {
+     const response = await fetch('https://hostel-management-p5dk.onrender.com/api/user/complaints', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
-        const data = await response.json();
+      const text = await response.text();
+let data;
+
+try {
+  data = JSON.parse(text);
+} catch (err) {
+  console.error("❌ Not JSON:", text);
+  throw new Error('Invalid server response');
+}
         setComplaints(data);
       } else {
         throw new Error('Failed to fetch complaints');
@@ -52,7 +60,7 @@ const Complaints = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('api/user/complaints', {
+     const response = await fetch('https://hostel-management-p5dk.onrender.com/api/user/complaints', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -61,7 +69,17 @@ const Complaints = () => {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
+      const text = await response.text();
+let data;
+
+try {
+  data = JSON.parse(text);
+} catch (err) {
+  console.error("❌ Not JSON:", text);
+  throw new Error('Invalid server response');
+}
+
+if (response.ok) {
         setShowForm(false);
         setFormData({
           title: '',
