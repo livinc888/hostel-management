@@ -20,7 +20,7 @@ app.use('/api/notices', require('./routes/notices'));
 app.use('/api/leaves', require('./routes/leaves'));
 app.use('/api/reports', require('./routes/reports'));
 app.use('/api/user', require('./routes/student'));
-app.use('/api/users', require('./routes/userRoutes'));
+
 
 app.get('/', (req, res) => {
   res.json({ message: 'Hostel Management System API is running' });
