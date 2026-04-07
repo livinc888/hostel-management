@@ -13,22 +13,27 @@ const generateToken = (id) => {
 // 🔹 LOGIN
 const login = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array()[0].msg
-      });
-    }
-
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    // ✅ Clean email only (IMPORTANT)
+    const cleanEmail = email.trim().toLowerCase();
+
+    console.log("LOGIN EMAIL:", cleanEmail);
+    console.log("LOGIN PASSWORD:", password);
+
+    const user = await User.findOne({ email: cleanEmail });
+
     if (!user) {
+      console.log("❌ User not found");
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // ✅ Compare password properly
+    console.log("DB PASSWORD:", user.password);
+
+    // ✅ Compare password correctly
     const isMatch = await bcrypt.compare(password, user.password);
+
+    console.log("MATCH RESULT:", isMatch);
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -43,6 +48,7 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        isAdmin: user.role === 'admin',
         phone: user.phone,
         roomId: user.roomId
       }
@@ -57,27 +63,27 @@ const login = async (req, res) => {
 // 🔹 REGISTER
 const register = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array()[0].msg
-      });
-    }
-
     const { name, email, password, role, phone, parentDetails } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    // ✅ Clean email
+    const cleanEmail = email.trim().toLowerCase();
+
+    const existingUser = await User.findOne({ email: cleanEmail });
+
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // ✅ Hash password before saving
+    // ✅ Hash password ONCE
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    console.log("REGISTER PASSWORD:", password);
+    console.log("HASHED PASSWORD:", hashedPassword);
+
     const user = new User({
       name,
-      email,
+      email: cleanEmail,
       password: hashedPassword,
       role: role || 'student',
       phone,
@@ -95,6 +101,7 @@ const register = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        isAdmin: user.role === 'admin',
         phone: user.phone,
         roomId: user.roomId
       }
@@ -106,7 +113,7 @@ const register = async (req, res) => {
   }
 };
 
-// 🔹 GET PROFILE
+// 🔹 PROFILE
 const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
