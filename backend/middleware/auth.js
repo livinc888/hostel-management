@@ -1,33 +1,24 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const express = require('express');
+const { body } = require('express-validator');
+const { login, register, getProfile } = require('../controllers/authController');
 
-const authMiddleware = async (req, res, next) => {
-  try {
-    const authHeader = req.header('Authorization');
-    const token = authHeader?.replace('Bearer ', '');
-    
-    if (!token) {
-      return res.status(401).json({ message: 'Access denied. No token provided.' });
-    }
-    
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select('-password');
-    
-    if (!user) {
-      return res.status(401).json({ message: 'Token is valid but user not found.' });
-    }
-    
-    req.user = user;
-    next();
-  } catch (error) {
-    if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({ message: 'Invalid token.' });
-    } else if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Token expired.' });
-    } else {
-      return res.status(500).json({ message: 'Server error in authentication.' });
-    }
-  }
-};
+// ✅ same fix here
+const authMiddleware = require('../middleware/auth');
 
-module.exports = authMiddleware;
+const router = express.Router();
+
+router.post('/login', [
+  body('email').isEmail().withMessage('Please enter a valid email'),
+  body('password').notEmpty().withMessage('Password is required')
+], login);
+
+router.post('/register', [
+  body('name').notEmpty().withMessage('Name is required'),
+  body('email').isEmail().withMessage('Please enter a valid email'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  body('phone').notEmpty().withMessage('Phone number is required')
+], register);
+
+router.get('/profile', authMiddleware, getProfile);
+
+module.exports = router;
