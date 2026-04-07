@@ -43,23 +43,28 @@ const Fees = () => {
     }
   };
 
-  const fetchStudents = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/students', {
+ const fetchStudents = async () => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(
+      'https://hostel-management-p5dk.onrender.com/api/users/students',
+      {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setStudents(data.students || []);
       }
-    } catch (err) {
-      console.error('Students error:', err);
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      setStudents(data); // ✅ IMPORTANT (not data.students)
     }
-  };
+
+  } catch (err) {
+    console.error('Students error:', err);
+  }
+};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
