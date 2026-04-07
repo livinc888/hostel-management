@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
 const { getStudents } = require('../controllers/userController');
+const { protect } = require('../middleware);
 
-// ✅ FIX: normal import (no destructuring)
-const authMiddleware = require('../middleware/auth');
-
-router.get('/students', authMiddleware, getStudents);
+// ✅ route: /api/users/students
+router.get('/students', protect, getStudents);
 
 module.exports = router;
