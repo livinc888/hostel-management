@@ -2,8 +2,10 @@ const express = require('express');
 const { body } = require('express-validator');
 const authMiddleware = require('../middleware/auth');
 const adminMiddleware = require('../middleware/admin');
+
 const {
   getComplaints,
+  getStudentComplaints, // ✅ add this in controller
   updateComplaint,
   getComplaintStats,
   deleteComplaint
@@ -11,21 +13,27 @@ const {
 
 const router = express.Router();
 
-// middleware
+// ✅ All routes require login
 router.use(authMiddleware);
-router.use(adminMiddleware);
 
-// ✅ FIX: put specific routes BEFORE dynamic routes
-router.get('/stats', getComplaintStats);
+// =========================
+// ✅ ADMIN ROUTES
+// =========================
+router.get('/stats', adminMiddleware, getComplaintStats);
 
-router.get('/', getComplaints);
+router.get('/', adminMiddleware, getComplaints);
 
-router.put('/:id', [
+router.put('/:id', adminMiddleware, [
   body('status')
     .isIn(['pending', 'in-progress', 'resolved', 'rejected'])
     .withMessage('Invalid status')
 ], updateComplaint);
 
-router.delete('/:id', deleteComplaint);
+router.delete('/:id', adminMiddleware, deleteComplaint);
+
+// =========================
+// ✅ STUDENT ROUTE
+// =========================
+router.get('/my', getStudentComplaints); // 👈 IMPORTANT
 
 module.exports = router;

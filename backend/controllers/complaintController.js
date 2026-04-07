@@ -118,9 +118,21 @@ const deleteComplaint = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+const getStudentComplaints = async (req, res) => {
+  try {
+    const complaints = await Complaint.find({ userId: req.user._id })
+      .sort({ createdAt: -1 });
+
+    res.json(complaints);
+  } catch (error) {
+    console.error('Get student complaints error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 module.exports = {
   getComplaints,
+  getStudentComplaints,
   updateComplaint,
   getComplaintStats,
   deleteComplaint
