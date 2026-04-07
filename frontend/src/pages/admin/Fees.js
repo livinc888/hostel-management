@@ -277,11 +277,13 @@ const Fees = () => {
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Select a student</option>
-                  {students.map((student) => (
-                    <option key={student._id} value={student._id}>
-                      {student.name} ({student.email})
-                    </option>
-                  ))}
+                 {students
+                    .filter(student => !student.roomId)
+                    .map((student) => (
+                      <option key={student._id} value={student._id}>
+                        {student.name} ({student.email})
+                      </option>
+                    ))}
                 </select>
               </div>
 
