@@ -58,7 +58,7 @@ const Fees = () => {
 
     if (response.ok) {
       const data = await response.json();
-      setStudents(data); // ✅ IMPORTANT (not data.students)
+     setStudents(data.students || data);// ✅ IMPORTANT (not data.students)
     }
 
   } catch (err) {
@@ -113,7 +113,7 @@ const Fees = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('api/fees/pay', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/fees/pay', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
