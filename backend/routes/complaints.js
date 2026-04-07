@@ -11,15 +11,21 @@ const {
 
 const router = express.Router();
 
+// middleware
 router.use(authMiddleware);
 router.use(adminMiddleware);
 
-router.get('/', getComplaints);
-router.put('/:id', [
-  body('status').isIn(['pending', 'in-progress', 'resolved', 'rejected'])
-                .withMessage('Invalid status')
-], updateComplaint);
+// ✅ FIX: put specific routes BEFORE dynamic routes
 router.get('/stats', getComplaintStats);
+
+router.get('/', getComplaints);
+
+router.put('/:id', [
+  body('status')
+    .isIn(['pending', 'in-progress', 'resolved', 'rejected'])
+    .withMessage('Invalid status')
+], updateComplaint);
+
 router.delete('/:id', deleteComplaint);
 
 module.exports = router;
