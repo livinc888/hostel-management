@@ -69,6 +69,12 @@ const getStudents = async (req, res) => {
 
     const total = await User.countDocuments(query);
 
+    // Check if this is the /api/users/students endpoint (return array directly)
+    if (req.originalUrl.includes('/api/users/students')) {
+      return res.json(students);
+    }
+
+    // For /api/admin/students, return paginated response
     res.json({
       students,
       total,

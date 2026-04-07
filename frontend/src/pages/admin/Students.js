@@ -32,7 +32,7 @@ const Students = () => {
     }
 
     try {
-      const response = await fetch('api/rooms/remove-student', {
+      const response = await fetch('https://hostel-management-p5dk.onrender.com/api/rooms/remove-student', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
