@@ -2,7 +2,7 @@ const express = require('express');
 const { body } = require('express-validator');
 const { login, register, getProfile } = require('../controllers/authController');
 
-// ✅ same fix here
+// import middleware (function)
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
@@ -19,6 +19,7 @@ router.post('/register', [
   body('phone').notEmpty().withMessage('Phone number is required')
 ], register);
 
-router.get('/profile', authMiddleware, getProfile);
+// ✅ ensure middleware is a function before using
+router.get('/profile', (req, res, next) => authMiddleware(req, res, next), getProfile);
 
 module.exports = router;
