@@ -13,27 +13,25 @@ const generateToken = (id) => {
 // 🔹 LOGIN
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors.array()[0].msg
+      });
+    }
 
-    // ✅ Clean email only (IMPORTANT)
-    const cleanEmail = email.trim().toLowerCase();
+    let { email, password } = req.body;
 
-    console.log("LOGIN EMAIL:", cleanEmail);
-    console.log("LOGIN PASSWORD:", password);
+    // ✅ Normalize email only
+    email = email.trim().toLowerCase();
 
-    const user = await User.findOne({ email: cleanEmail });
-
+    const user = await User.findOne({ email });
     if (!user) {
-      console.log("❌ User not found");
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    console.log("DB PASSWORD:", user.password);
-
-    // ✅ Compare password correctly
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    console.log("MATCH RESULT:", isMatch);
+    // ✅ Use model method (IMPORTANT FIX)
+    const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -48,7 +46,6 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        isAdmin: user.role === 'admin',
         phone: user.phone,
         roomId: user.roomId
       }
@@ -63,28 +60,29 @@ const login = async (req, res) => {
 // 🔹 REGISTER
 const register = async (req, res) => {
   try {
-    const { name, email, password, role, phone, parentDetails } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors.array()[0].msg
+      });
+    }
 
-    // ✅ Clean email
-    const cleanEmail = email.trim().toLowerCase();
+    let { name, email, password, role, phone, parentDetails } = req.body;
 
-    const existingUser = await User.findOne({ email: cleanEmail });
+    // ✅ Normalize email
+    email = email.trim().toLowerCase();
 
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // ✅ Hash password ONCE
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    console.log("REGISTER PASSWORD:", password);
-    console.log("HASHED PASSWORD:", hashedPassword);
+    // ❌ REMOVE HASHING HERE (MODEL WILL HANDLE IT)
 
     const user = new User({
       name,
-      email: cleanEmail,
-      password: hashedPassword,
+      email,
+      password, // raw password → model hashes
       role: role || 'student',
       phone,
       parentDetails
@@ -101,7 +99,6 @@ const register = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        isAdmin: user.role === 'admin',
         phone: user.phone,
         roomId: user.roomId
       }
@@ -113,7 +110,7 @@ const register = async (req, res) => {
   }
 };
 
-// 🔹 PROFILE
+// 🔹 GET PROFILE
 const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
