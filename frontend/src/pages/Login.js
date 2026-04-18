@@ -156,8 +156,7 @@ const Login = () => {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
-            <p>Admin: admin@hostel.com / admin123</p>
-            <p>Student: student@hostel.com / student123</p>
+          <p>Please log in with your account to continue.</p>
           </div>
 
           <div className="mt-6 text-center">
